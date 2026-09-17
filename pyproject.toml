@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "manufacturing-operations-intelligence"
+version = "0.1.0"
+description = "Portfolio MVP foundation for manufacturing operations analytics."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "openpyxl>=3.1,<4",
+    "pandas>=2.2,<3",
+    "plotly>=5.24,<7",
+    "reportlab>=4.2,<5",
+    "streamlit>=1.54,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0.3,<10",
+    "ruff>=0.8,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = ["--strict-config", "--strict-markers"]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]

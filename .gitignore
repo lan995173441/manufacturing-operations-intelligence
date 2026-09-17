@@ -1,0 +1,48 @@
+.DS_Store
+.env*
+!.env.example
+.streamlit/secrets.toml
+*.pem
+*.key
+
+# IDE and editor-local settings
+.idea/
+.vscode/
+*.code-workspace
+
+# Logs, temporary work, generated reports, and coverage artifacts
+*.log
+logs/
+tmp/
+work/
+outputs/
+*.tmp
+*.temp
+.coverage
+htmlcov/
+
+# Private, client-provided, or raw operational data.
+# Intentionally versioned synthetic data remains under data/samples/.
+data/private/
+data/client/
+data/raw/
+uploads/
+
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.tox/
+.nox/
+build/
+dist/
+
+*.db
+*.db-shm
+*.db-wal
+*.sqlite*
+var/*
+!var/.gitkeep
