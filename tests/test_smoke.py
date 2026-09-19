@@ -1,5 +1,6 @@
 """Foundation smoke tests."""
 
+import tomllib
 from importlib import import_module
 from pathlib import Path
 
@@ -32,9 +33,12 @@ def test_foundation_imports_and_defaults(monkeypatch) -> None:
         assert import_module(module)
 
     settings = Settings.from_environment()
-    assert __version__ == "0.1.0"
+    assert __version__ == "1.0.0rc1"
+    project = tomllib.loads(
+        (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text(encoding="utf-8")
+    )
+    assert project["project"]["version"] == __version__
     assert settings.environment == "development"
     assert settings.database_path == Path("var/manufacturing_operations_intelligence.db")
     assert settings.ai_enabled is False
     assert callable(main)
-

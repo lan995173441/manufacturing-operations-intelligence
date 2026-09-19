@@ -2,6 +2,12 @@
 
 Chinese counterpart: [CHANGELOG.zh-CN.md](CHANGELOG.zh-CN.md).
 
+## v1.0.0-rc.1 — 2026-09-20
+
+- Aligned package and runtime metadata to the PEP 440 release-candidate version `1.0.0rc1`.
+- Added release-freeze fixes for current-summary report regeneration, report KPI-definition visibility, staged upload metadata, shared shift/material filters, and dashboard evidence detail.
+- Added a versioned QA test plan and regression coverage. Product-owner decisions BA-01–BA-08 remain open.
+
 ## RC1 candidate — 2026-09-17
 
 - Froze feature work and audited the PRD MUST clauses and acceptance criteria. Results and evidence: [RC1 release checklist](docs/release/RELEASE_CHECKLIST.md).
