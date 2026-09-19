@@ -35,6 +35,7 @@ from manufacturing_operations_intelligence.domain.anomalies import (
 from manufacturing_operations_intelligence.domain.validation import ValidationResult
 from manufacturing_operations_intelligence.reporting import (
     ReportArtifacts,
+    ReportNarrative,
     ReportPayload,
     render_excel,
     render_pdf,
@@ -84,7 +85,9 @@ class FilterOptions:
     start_date: str
     end_date: str
     line_ids: tuple[str, ...]
+    shift_ids: tuple[str, ...]
     product_ids: tuple[str, ...]
+    material_ids: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -123,7 +126,7 @@ class ManufacturingApplicationService:
         return KpiScope(options.start_date, options.end_date) if options else None
 
     def get_filter_options(self) -> FilterOptions | None:
-        """Offer only lines and products present in the active accepted batch."""
+        """Offer only scope identifiers present in the active accepted batch."""
         batch = self._load_batch()
         if batch is None or not batch.production_plan:
             return None
@@ -134,7 +137,9 @@ class ManufacturingApplicationService:
             min(dates),
             max(dates),
             tuple(sorted({item["line_id"] for item in values})),
+            tuple(sorted({item["shift_id"] for item in values})),
             tuple(sorted({item["product_id"] for item in values})),
+            tuple(sorted({row.values["material_id"] for row in batch.inventory})),
         )
 
     def load_sample_data(self, directory: str | Path | None = None) -> UploadProcessingResult:
@@ -254,17 +259,22 @@ class ManufacturingApplicationService:
             datetime.now(UTC).isoformat(timespec="seconds"),
         )
 
-    def export_management_reports(self, scope: KpiScope) -> ReportArtifacts:
-        """Render Excel and PDF from the same verified analytics payload."""
+    def export_management_reports(
+        self, scope: KpiScope, *, summary: ManagementSummary | None = None
+    ) -> ReportArtifacts:
+        """Render Excel and PDF from one verified payload and optional current narrative."""
         payload = self.get_report_payload(scope)
+        narrative = self._report_narrative(payload, summary) if summary is not None else None
         excel = pdf = None
         excel_error = pdf_error = None
         try:
-            excel = render_excel(payload)
+            excel = (
+                render_excel(payload, narrative) if narrative is not None else render_excel(payload)
+            )
         except (OSError, ValueError, LayoutError):
             excel_error = "Excel generation failed for this selection."
         try:
-            pdf = render_pdf(payload)
+            pdf = render_pdf(payload, narrative) if narrative is not None else render_pdf(payload)
         except (OSError, ValueError, LayoutError):
             pdf_error = "PDF generation failed for this selection."
         if excel is None and pdf is None:
@@ -283,6 +293,30 @@ class ManufacturingApplicationService:
             api_key=os.getenv("MOI_AI_API_KEY"),
             model=os.getenv("MOI_AI_MODEL", "gpt-4.1-mini"),
             provider=provider,
+        )
+
+    @staticmethod
+    def _report_narrative(payload: ReportPayload, summary: ManagementSummary) -> ReportNarrative:
+        """Permit reports to use only a summary from the identical batch, scope and version."""
+        definition_version = payload.metrics["KPI-PA"].definition_version
+        if (
+            summary.identity != payload.identity
+            or summary.scope != payload.scope
+            or summary.definition_version != definition_version
+        ):
+            raise ApplicationServiceError(
+                "The management summary is stale for the selected batch, filters or KPI version."
+            )
+        source = (
+            "AI-assisted draft — human review required"
+            if summary.status == "ai_draft"
+            else "Deterministic offline summary"
+        )
+        return ReportNarrative(
+            source=source,
+            observations=summary.observations,
+            management_attention=summary.management_attention,
+            limitations=summary.limitations,
         )
 
     def _metrics(self, scope: KpiScope, keys: tuple[str, ...]) -> MetricsAnalysis:

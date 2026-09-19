@@ -20,6 +20,7 @@ from manufacturing_operations_intelligence.services.application import (
     AnomalyAnalysis,
     ManufacturingApplicationService,
 )
+from manufacturing_operations_intelligence.ui.app import _upload_preview_rows
 
 APP_FILE = Path(__file__).resolve().parents[1] / "streamlit_app.py"
 
@@ -86,11 +87,34 @@ def test_five_areas_and_filters_render_from_sample_data(tmp_path: Path, monkeypa
         widget for widget in app.multiselect if widget.label.startswith("Production lines")
     ).set_value(["LINE-02"])
     next(
+        widget for widget in app.multiselect if widget.label.startswith("Production shifts")
+    ).set_value(["DAY"])
+    next(
         widget for widget in app.multiselect if widget.label.startswith("Finished products")
     ).set_value(["PRD-001"])
     app.run()
     assert not app.exception
 
+    expected = service.get_production_analysis(
+        KpiScope("2025-01-01", "2025-03-31", line_ids=("LINE-02",), shift_ids=("DAY",),
+                 product_ids=("PRD-001",))
+    )
+    assert any(
+        item.label == "Production attainment"
+        and item.value == expected.metrics["KPI-PA"].display_value
+        for item in app.metric
+    )
+    assert any("Source ID" in item.value.columns for item in app.dataframe)
+
+    _area(app).set_value("Inventory").run()
+    material_filter = next(
+        widget for widget in app.multiselect if widget.label.startswith("Inventory materials")
+    )
+    material_filter.set_value(["MAT-005"]).run()
+    inventory_table = next(df.value for df in app.dataframe if "Material" in df.value.columns)
+    assert inventory_table["Material"].tolist() == ["MAT-005"]
+
+    _area(app).set_value("Production").run()
     start = next(widget for widget in app.date_input if widget.label == "From")
     end = next(widget for widget in app.date_input if widget.label == "Through")
     start.set_value(date(2026, 1, 1))
@@ -98,6 +122,33 @@ def test_five_areas_and_filters_render_from_sample_data(tmp_path: Path, monkeypa
     app.run()
     assert not app.exception
     assert any("No production records match" in item.value for item in app.info)
+
+
+def test_upload_preview_lists_selected_file_metadata_before_activation() -> None:
+    uploaded = type("Uploaded", (), {"name": "plan.csv", "size": 123})()
+    rows = _upload_preview_rows({"production_plan": uploaded, "quality": None}, None)
+    assert rows == [
+        {
+            "Selected file": "plan.csv",
+            "Size (bytes)": 123,
+            "Domain assignment / expected sheets": "production_plan",
+        },
+        {
+            "Selected file": "Not selected",
+            "Size (bytes)": None,
+            "Domain assignment / expected sheets": "quality",
+        },
+    ]
+    workbook = type("Uploaded", (), {"name": "batch.xlsx", "size": 456})()
+    assert _upload_preview_rows({}, workbook) == [
+        {
+            "Selected file": "batch.xlsx",
+            "Size (bytes)": 456,
+            "Domain assignment / expected sheets": (
+                "production_plan, production_actual, quality, inventory"
+            ),
+        }
+    ]
 
 
 @pytest.mark.parametrize(

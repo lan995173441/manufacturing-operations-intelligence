@@ -127,7 +127,7 @@ def _chart(title: str, traces: list[go.BaseTraceType], *, y_title: str) -> None:
 
 def _production_trend(series, *, title: str) -> None:
     if not series.daily:
-        st.info("No production records match the selected dates, line and product.")
+        st.info("No production records match the selected dates, line, shift and product.")
         return
     days = [point.group for point in series.daily]
     _chart(
@@ -200,6 +200,29 @@ def _quality_trend(series) -> None:
         y_title="Finished pieces (ea)",
     )
     st.caption("Good plus scrap equals actual output. Scrap means final scrap disposition.")
+
+
+def _quality_lines(series) -> None:
+    if not series.by_line:
+        return
+    _chart(
+        "Final quality disposition by production line",
+        [
+            go.Bar(
+                x=[point.group for point in series.by_line],
+                y=[point.good_qty for point in series.by_line],
+                name="Good",
+                marker_color=_TEAL,
+            ),
+            go.Bar(
+                x=[point.group for point in series.by_line],
+                y=[point.scrap_qty for point in series.by_line],
+                name="Scrap",
+                marker_color=_AMBER,
+            ),
+        ],
+        y_title="Finished pieces (ea)",
+    )
 
 
 def _downtime_by_line(series) -> None:
@@ -282,6 +305,9 @@ def _anomaly_panel(analysis, expected_batch_id: str, *, full: bool) -> None:
                     "Entity": item.entity.key,
                     "Date": item.date_start,
                     "What happened": item.explanation,
+                    "Source evidence": "; ".join(
+                        f"{ref.dataset} row {ref.source_row}" for ref in item.source_refs
+                    ),
                 }
                 for item in selected
             ],
@@ -319,6 +345,63 @@ def _inventory_table(result) -> None:
     )
 
 
+def _series_table(series, *, title: str, source_refs) -> None:
+    """Display service-prepared daily evidence without recalculating any KPI."""
+    st.subheader(title)
+    if series.daily:
+        st.dataframe(
+            [
+                {
+                    "Date": point.group,
+                    "Planned (ea)": point.planned_qty,
+                    "Actual (ea)": point.actual_qty,
+                    "Good (ea)": point.good_qty,
+                    "Scrap (ea)": point.scrap_qty,
+                    "Downtime (line-minutes)": point.downtime_minutes,
+                }
+                for point in series.daily
+            ],
+            hide_index=True,
+            width="stretch",
+        )
+    else:
+        st.info("No selected production records are available for detail review.")
+    if source_refs:
+        with st.expander(f"Source evidence ({len(source_refs):,} rows)"):
+            st.dataframe(
+                [
+                    {
+                        "Dataset": ref.dataset,
+                        "Source ID": ref.source_id,
+                        "Source row": ref.source_row,
+                    }
+                    for ref in source_refs
+                ],
+                hide_index=True,
+                width="stretch",
+            )
+
+
+def _upload_preview_rows(files, workbook) -> list[dict[str, object]]:
+    """Present selected upload metadata before validation or activation."""
+    if workbook is not None:
+        return [
+            {
+                "Selected file": workbook.name,
+                "Size (bytes)": workbook.size,
+                "Domain assignment / expected sheets": ", ".join(_DATASETS),
+            }
+        ]
+    return [
+        {
+            "Selected file": file.name if file is not None else "Not selected",
+            "Size (bytes)": file.size if file is not None else None,
+            "Domain assignment / expected sheets": dataset,
+        }
+        for dataset, file in files.items()
+    ]
+
+
 def _replacement_acknowledged(active_batch_id: str | None, action: str) -> bool:
     if active_batch_id is None:
         return True
@@ -348,6 +431,10 @@ def _upload_controls(service: ManufacturingApplicationService, active_batch_id: 
         else:
             files = {}
             workbook = st.file_uploader("Workbook with four named sheets", type="xlsx")
+        st.caption(
+            "Batch preview — validation and activation do not occur until the button is used."
+        )
+        st.dataframe(_upload_preview_rows(files, workbook), hide_index=True, width="stretch")
         acknowledged = _replacement_acknowledged(active_batch_id, "this upload")
         if st.button("Validate and activate upload", disabled=not acknowledged) and acknowledged:
             if upload_format == "Four CSV files":
@@ -450,18 +537,34 @@ def main(settings: Settings | None = None) -> None:
             options.line_ids,
             key=f"lines_{options.identity.batch_id}",
         )
+        selected_shifts = st.multiselect(
+            "Production shifts (blank means all)",
+            options.shift_ids,
+            key=f"shifts_{options.identity.batch_id}",
+        )
         selected_products = st.multiselect(
             "Finished products (blank means all)",
             options.product_ids,
             key=f"products_{options.identity.batch_id}",
         )
         area = st.radio("Area", _AREAS)
+        selected_materials = (
+            st.multiselect(
+                "Inventory materials (this page only; blank means all)",
+                options.material_ids,
+                key=f"materials_{options.identity.batch_id}",
+            )
+            if area == "Inventory"
+            else ()
+        )
     try:
         scope = KpiScope(
             start.isoformat(),
             end.isoformat(),
             line_ids=tuple(selected_lines) or None,
+            shift_ids=tuple(selected_shifts) or None,
             product_ids=tuple(selected_products) or None,
+            material_ids=tuple(selected_materials) if area == "Inventory" else None,
         )
     except ValueError:
         st.error("The start date must be on or before the end date.")
@@ -512,18 +615,39 @@ def main(settings: Settings | None = None) -> None:
         _production_trend(analysis.series, title="Planned and actual output by day")
         _production_lines(analysis.series)
         _downtime_by_line(analysis.series)
+        _series_table(
+            analysis.series,
+            title="Selected production detail",
+            source_refs=analysis.metrics["KPI-PA"].source_refs,
+        )
+        st.subheader("Relevant operational alerts")
+        _anomaly_panel(service.get_anomalies(scope), analysis.identity.batch_id, full=True)
     elif area == "Quality":
         st.header("Quality")
         analysis = service.get_quality_analysis(scope)
-        cols = st.columns(2)
+        cols = st.columns(3)
         with cols[0]:
             _metric(analysis.metrics["KPI-GY"], "Good yield")
         with cols[1]:
             _metric(analysis.metrics["KPI-SR"], "Scrap rate")
+        with cols[2]:
+            produced = analysis.metrics["KPI-GY"].denominator
+            st.metric("Produced output", f"{produced:,} ea" if produced is not None else "N/A")
         _quality_trend(analysis.series)
+        _quality_lines(analysis.series)
+        _series_table(
+            analysis.series,
+            title="Selected quality detail",
+            source_refs=analysis.metrics["KPI-GY"].source_refs,
+        )
+        st.subheader("Relevant operational alerts")
+        _anomaly_panel(service.get_anomalies(scope), analysis.identity.batch_id, full=True)
     elif area == "Inventory":
         st.header("Inventory")
-        st.caption("As of the selected end date; line and product filters do not apply.")
+        st.caption(
+            "As of the selected end date; line, shift and product filters do not apply. "
+            "The material selector affects this page only, never full reports."
+        )
         analysis = service.get_inventory_analysis(scope)
         risk = analysis.metrics["KPI-IR"]
         _metric(risk, "Materials below safety stock")
@@ -585,6 +709,7 @@ def main(settings: Settings | None = None) -> None:
                     st.warning("The active data changed. Refresh the page and try again.")
                 else:
                     st.session_state["prepared_summary"] = (report_key, summary)
+                    st.session_state.pop("prepared_report", None)
                     prepared_summary = (report_key, summary)
             except ApplicationServiceError as exc:
                 st.error(str(exc))
@@ -620,7 +745,10 @@ def main(settings: Settings | None = None) -> None:
             st.session_state.pop("prepared_report", None)
             prepared = None
             try:
-                artifact = service.export_management_reports(scope)
+                artifact = service.export_management_reports(
+                    scope,
+                    summary=prepared_summary[1] if prepared_summary is not None else None,
+                )
                 if artifact.identity.batch_id != options.identity.batch_id:
                     st.warning(
                         "The active data changed. Refresh the page and generate reports again."

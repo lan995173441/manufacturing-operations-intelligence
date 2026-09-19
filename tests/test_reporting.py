@@ -18,6 +18,7 @@ from manufacturing_operations_intelligence.services.application import (
     ApplicationServiceError,
     ManufacturingApplicationService,
 )
+from manufacturing_operations_intelligence.summaries import generate_management_summary
 
 SCOPE = KpiScope("2025-01-01", "2025-03-31", line_ids=("LINE-02",))
 APP_FILE = Path(__file__).resolve().parents[1] / "streamlit_app.py"
@@ -112,6 +113,31 @@ def test_anomaly_detail_is_complete_in_excel_and_pdf_preview_is_labeled(service)
     assert payload.identity.batch_id[:12].encode() in artifacts.pdf
     assert b"20550/659" not in artifacts.pdf  # Exact fractions are formatted for managers.
     assert "/" not in str(sheet["F3"].value)
+
+
+def test_current_management_summary_is_included_and_stale_summary_is_rejected(service) -> None:
+    payload = service.get_report_payload(SCOPE)
+    summary = generate_management_summary(
+        payload,
+        enabled=True,
+        api_key="test-key",
+        model="test-model",
+        provider=lambda *_args: '{"observations":["KPI-PA"],"management_attention":["KPI-SR"]}',
+    )
+    assert summary.status == "ai_draft"
+
+    artifacts = service.export_management_reports(SCOPE, summary=summary)
+    workbook = load_workbook(BytesIO(artifacts.excel), read_only=True)
+    summary_rows = list(workbook["Summary"].iter_rows(min_row=3, values_only=True))
+    assert ("Summary type", "AI-assisted draft — human review required") in summary_rows
+    assert any(summary.observations[0] == row[1] for row in summary_rows)
+    assert summary.observations[0].encode() in artifacts.pdf
+    assert b"KPI definitions" in artifacts.pdf
+    assert b"Gross actual output divided by planned output" in artifacts.pdf
+
+    stale = replace(summary, scope=KpiScope("2025-01-02", "2025-03-31"))
+    with pytest.raises(ApplicationServiceError, match="stale"):
+        service.export_management_reports(SCOPE, summary=stale)
 
 
 def test_unconfigured_rules_and_empty_production_are_labeled(service, tmp_path: Path) -> None:

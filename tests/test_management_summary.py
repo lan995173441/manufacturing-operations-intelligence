@@ -5,10 +5,12 @@ from __future__ import annotations
 import json
 from dataclasses import replace
 from decimal import Decimal
+from io import BytesIO
 from pathlib import Path
 from urllib import error
 
 import pytest
+from openpyxl import load_workbook
 from streamlit.testing.v1 import AppTest
 
 from manufacturing_operations_intelligence.domain.analytics import KpiScope
@@ -216,6 +218,15 @@ def test_reports_page_can_generate_summary_offline(tmp_path: Path, monkeypatch) 
     assert any("Deterministic offline summary" in item.value for item in app.info)
     assert any("Observations" in item.value for item in app.markdown)
     summary = app.session_state["prepared_summary"][1]
+    next(
+        widget for widget in app.button if widget.label == "Generate management reports"
+    ).click().run()
+    assert not app.exception
+    workbook = load_workbook(BytesIO(app.session_state["prepared_report"][1].excel), read_only=True)
+    assert any(
+        summary.observations[0] == row[1]
+        for row in workbook["Summary"].iter_rows(min_row=3, values_only=True)
+    )
     app.session_state["prepared_summary"] = (("old-definition",), summary)
     app.run()
     assert "prepared_summary" not in app.session_state

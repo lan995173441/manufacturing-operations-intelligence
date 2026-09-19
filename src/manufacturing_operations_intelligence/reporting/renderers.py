@@ -36,6 +36,19 @@ LABELS = {
     "KPI-IR": "Materials below safety stock",
     "KPI-OL": "Output by production line",
 }
+KPI_DEFINITION_SUMMARIES = (
+    ("Production attainment", "Gross actual output divided by planned output."),
+    ("Good yield", "Final good quantity divided by actual output."),
+    ("Scrap rate", "Final scrap quantity divided by actual output."),
+    ("Total downtime", "Sum of recorded downtime in line-minutes."),
+    ("Completed orders", "Unavailable: the contract has no completion events or order census."),
+    ("Schedule adherence", "Unavailable: the contract has no due or completion evidence."),
+    (
+        "Materials below safety stock",
+        "Count of materials strictly below safety stock as of end date.",
+    ),
+    ("Output by production line", "Actual output grouped by production line."),
+)
 INK = "17324D"
 
 
@@ -57,6 +70,16 @@ class ReportArtifacts:
     pdf: bytes | None
     excel_error: str | None = None
     pdf_error: str | None = None
+
+
+@dataclass(frozen=True)
+class ReportNarrative:
+    """Display-only narrative supplied by the application layer after identity checks."""
+
+    source: str
+    observations: tuple[str, ...]
+    management_attention: tuple[str, ...]
+    limitations: tuple[str, ...]
 
 
 def _verify(payload: ReportPayload) -> None:
@@ -169,6 +192,25 @@ def _summary(payload: ReportPayload) -> list[str]:
     return lines
 
 
+def _narrative_sections(
+    payload: ReportPayload, narrative: ReportNarrative | None
+) -> tuple[str, tuple[tuple[str, tuple[str, ...]], ...]]:
+    """Keep the default deterministic narrative while allowing a verified current draft."""
+    if narrative is None:
+        return (
+            "Deterministic summary from calculated results; no AI-generated claims.",
+            (("Observations", tuple(_summary(payload))),),
+        )
+    return (
+        narrative.source,
+        (
+            ("Observations", narrative.observations),
+            ("Management attention", narrative.management_attention),
+            ("Limitations", narrative.limitations),
+        ),
+    )
+
+
 def _anomalies(payload: ReportPayload) -> list[tuple[object, ...]]:
     if payload.detection is None:
         return []
@@ -248,7 +290,7 @@ def _excel_chart(sheet, kind: str, count: int, anchor: str) -> None:
     sheet.add_chart(chart, anchor)
 
 
-def render_excel(payload: ReportPayload) -> bytes:
+def render_excel(payload: ReportPayload, narrative: ReportNarrative | None = None) -> bytes:
     """Export final values, prepared series and complete detail without KPI formulas."""
     _verify(payload)
     book = Workbook()
@@ -347,10 +389,12 @@ def render_excel(payload: ReportPayload) -> bytes:
         for skipped in payload.detection.skipped:
             _append(audit, (skipped.type, "skipped", skipped.reason, skipped.entity.key))
 
-    summary = _sheet(book, "Summary", ("Deterministic management observation",))
-    for line in _summary(payload):
-        _append(summary, (line,))
-    _append(summary, ("Generated from calculated results; no AI model was used.",))
+    summary = _sheet(book, "Summary", ("Section", "Management summary"))
+    source, sections = _narrative_sections(payload, narrative)
+    _append(summary, ("Summary type", source))
+    for heading, lines in sections:
+        for line in lines:
+            _append(summary, (heading, line))
     for sheet in book:
         _finish(sheet)
     output = BytesIO()
@@ -412,7 +456,7 @@ def _plot(points, title: str, fields: tuple[tuple[str, str, str], ...]) -> Drawi
     return drawing
 
 
-def render_pdf(payload: ReportPayload) -> bytes:
+def render_pdf(payload: ReportPayload, narrative: ReportNarrative | None = None) -> bytes:
     """Generate a paginated review PDF from the same immutable report payload."""
     _verify(payload)
     styles = getSampleStyleSheet()
@@ -465,6 +509,12 @@ def render_pdf(payload: ReportPayload) -> bytes:
                 if key != "KPI-OL"
             ],
             [155, 120, 225],
+            styles,
+        ),
+        Paragraph("KPI definitions", styles["Section"]),
+        _table(
+            [("Indicator", "Current candidate definition"), *KPI_DEFINITION_SUMMARIES],
+            [155, 345],
             styles,
         ),
         KeepTogether(
@@ -582,14 +632,12 @@ def render_pdf(payload: ReportPayload) -> bytes:
             )
         )
     story.append(Paragraph("Management summary", styles["Section"]))
-    for line in _summary(payload):
-        story.extend((_p(line, styles["Normal"]), Spacer(1, 5)))
-    story.append(
-        _p(
-            "Deterministic summary from calculated results; no AI-generated claims.",
-            styles["Normal"],
-        )
-    )
+    source, sections = _narrative_sections(payload, narrative)
+    story.append(_p(source, styles["Normal"]))
+    for heading, lines in sections:
+        story.append(_p(f"{heading}:", styles["Normal"]))
+        for line in lines:
+            story.extend((_p(line, styles["Normal"]), Spacer(1, 5)))
 
     def footer(canvas, document) -> None:
         canvas.saveState()

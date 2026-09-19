@@ -70,7 +70,9 @@ def test_csv_upload_to_persisted_kpis_and_anomalies(tmp_path: Path, synthetic_bu
     options = service.get_filter_options()
     assert options.identity.batch_id == batch_id
     assert options.line_ids == ("LINE-01", "LINE-02", "LINE-03")
+    assert options.shift_ids == ("DAY", "NIGHT")
     assert len(options.product_ids) == 20
+    assert len(options.material_ids) == 40
 
     day = synthetic_bundle.scenarios.underperformance_dates[0].isoformat()
     scope = KpiScope(day, day, line_ids=("LINE-02",))
