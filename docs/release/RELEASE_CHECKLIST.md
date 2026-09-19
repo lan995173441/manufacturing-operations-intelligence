@@ -4,6 +4,14 @@ Date: 2026-09-17. Status: **candidate prepared; handover blocked**. Chinese coun
 
 This is an evidence audit of the original [PRD](../product/PRD.md) draft and [Acceptance Criteria](../quality/ACCEPTANCE_CRITERIA.md). **PASS** means the stated observable behavior has test or inspection evidence, **FAIL** means an observed mismatch, and **NOT TESTED** means evidence is insufficient or a business decision is still required. A passing test of a provisional formula is not product-owner approval. Feature rows assess the feature's detailed behavior; their numbered acceptance clauses are assessed separately.
 
+## Formal release candidate freeze — 2026-09-19
+
+- **Release branch:** `release/v1.0.0`
+- **Recommended candidate version:** `v1.0.0-rc.1`; no Git tag has been created.
+- **Freeze status:** Active. New features, new KPIs, AI scope expansion, integrations, infrastructure changes, broad refactors, and dependency upgrades are prohibited. Only release-blocking/high-severity fixes, regressions, security or reliability fixes, necessary usability corrections, and release documentation/metadata may proceed.
+- **Baseline validation:** `.venv/bin/ruff check .` passed; `.venv/bin/pytest -q` passed **138 tests in 34.23s**; documented `.venv/bin/pytest -v` passed **138 tests in 33.34s** on Python 3.12.2.
+- **Pending:** UAT, product-owner decisions BA-01–BA-08, PRD/charter reconciliation, and final release approval. This freeze does not change the RC1 **NO GO for handover** decision below.
+
 ## RC1 validation record
 
 | Check | Result | Evidence |
