@@ -4,6 +4,21 @@ Date: 2026-09-17. Status: **candidate prepared; handover blocked**. Chinese coun
 
 This is an evidence audit of the original [PRD](../product/PRD.md) draft and [Acceptance Criteria](../quality/ACCEPTANCE_CRITERIA.md). **PASS** means the stated observable behavior has test or inspection evidence, **FAIL** means an observed mismatch, and **NOT TESTED** means evidence is insufficient or a business decision is still required. A passing test of a provisional formula is not product-owner approval. Feature rows assess the feature's detailed behavior; their numbered acceptance clauses are assessed separately.
 
+## Final v1.0.0 release disposition — 2026-09-20
+
+**Decision:** Released as `v1.0.0` after explicit release-approver acceptance of the exceptions below. This decision does not rewrite the historical RC1 findings in this document or represent missing evidence as PASS.
+
+| Final-gate item | Disposition | Evidence / limitation |
+| --- | --- | --- |
+| RC BLOCKER/HIGH engineering defects | Closed | `a641ac7` fixes RC identity and test-plan coverage; `3114b65` fixes the summary-report, filter, preview/evidence, and PDF-definition defects with regression tests. |
+| Automated engineering validation | PASS | On the final-version metadata change, Ruff passed and all 140 tests passed in bounded groups. |
+| UAT | Accepted exception | The release approver reports UAT complete, but no UAT plan, results, scenario evidence, or sign-off artifact is present in this repository; this audit cannot independently verify critical UAT cases. |
+| Product-owner decisions BA-01–BA-08 | Accepted exception | No dated decision records are present. Candidate KPI/anomaly/data-contract semantics remain limited to the synthetic demonstration. |
+| Performance target | Accepted exception | No approved workload, hardware boundary, or target is recorded. |
+| Historical RC1 table below | Historical record | Its F01, F06–F12 dashboard/report failures predate `3114b65`; its remaining FAIL/NOT TESTED rows remain evidence gaps or draft-governance findings unless separately resolved. |
+
+**Release scope:** local, single-user use with clearly labelled synthetic data only. Do not use this release for production control, compliance decisions, public hosting, or confidential customer data.
+
 ## Formal release candidate freeze — 2026-09-19
 
 - **Release branch:** `release/v1.0.0`

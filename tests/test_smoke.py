@@ -33,7 +33,7 @@ def test_foundation_imports_and_defaults(monkeypatch) -> None:
         assert import_module(module)
 
     settings = Settings.from_environment()
-    assert __version__ == "1.0.0rc1"
+    assert __version__ == "1.0.0"
     project = tomllib.loads(
         (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text(encoding="utf-8")
     )

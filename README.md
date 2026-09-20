@@ -4,7 +4,7 @@ A local, portfolio-grade manufacturing analytics MVP. It validates four syntheti
 
 Chinese guide: [README.zh-CN.md](README.zh-CN.md).
 
-**Release status:** RC1 verification is recorded in the [release checklist](docs/release/RELEASE_CHECKLIST.md) and [changelog](CHANGELOG.md). RC1 is **not approved for handover**: the PRD's detailed page/upload clauses have open gaps, and product-owner business decisions BA-01–BA-08 remain unresolved. Passing engineering tests validates the synthetic demonstration only.
+**Release status:** v1.0.0 is released for the documented local, synthetic-data portfolio demonstration. The release approver explicitly accepted the exceptions recorded in the [release checklist](docs/release/RELEASE_CHECKLIST.md): product-owner decisions BA-01–BA-08 and UAT artifacts are not recorded, and no approved performance target exists. Passing engineering tests validates the synthetic demonstration only; it does not make this a production MES, compliance tool, or confidential-data service.
 
 ## Run locally
 

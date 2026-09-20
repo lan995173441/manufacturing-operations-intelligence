@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "manufacturing-operations-intelligence"
-version = "1.0.0rc1"
+version = "1.0.0"
 description = "Portfolio MVP foundation for manufacturing operations analytics."
 requires-python = ">=3.12,<3.13"
 dependencies = [
