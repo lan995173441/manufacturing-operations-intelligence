@@ -1,6 +1,6 @@
 # Public portfolio deployment — Streamlit Community Cloud
 
-Status: deployment-ready repository configuration; no public URL has been created yet. Chinese companion: [STREAMLIT_COMMUNITY_CLOUD.zh-CN.md](STREAMLIT_COMMUNITY_CLOUD.zh-CN.md).
+Status: public demo deployed and externally smoke-tested at [manufacturing-operations-intelligence-3pvpwneerbbz2xbx5hgaqw.streamlit.app](https://manufacturing-operations-intelligence-3pvpwneerbbz2xbx5hgaqw.streamlit.app/). Chinese companion: [STREAMLIT_COMMUNITY_CLOUD.zh-CN.md](STREAMLIT_COMMUNITY_CLOUD.zh-CN.md).
 
 ## Platform
 
@@ -39,19 +39,19 @@ Do not set `MOI_AI_API_KEY`. If an API key is accidentally configured, `MOI_AI_E
 
 Run these checks after publishing, in a clean browser session:
 
-| Check | Expected public-demo result | Status before URL exists |
+| Check | Expected public-demo result | Public validation status |
 | --- | --- | --- |
-| Public URL | The app loads without a traceback. | Not testable externally |
-| Overview | Six KPI cards, production trend, and synthetic-data alerts render. | Locally validated |
-| Production | Plan-versus-actual trend, line charts, and filters render. | Locally validated |
-| Quality | Yield, scrap, trend, and alerts render. | Locally validated |
-| Inventory | As-of inventory risk view and material selector render. | Locally validated |
-| Filters | Date, line, shift, product, and applicable material filters update the visible analysis. | Locally validated |
-| Sample data | Dashboard is populated automatically; no upload is required. | Locally validated |
-| Excel export | The Reports & Insights download produces a non-empty `.xlsx` file. | Locally validated |
-| PDF export | The Reports & Insights download produces a non-empty `.pdf` file. | Locally validated |
-| No AI key | Management summary is an explicitly labeled deterministic offline fallback. | Locally validated |
-| Upload isolation | No file-upload control is available in public-demo mode. | Locally validated |
+| Public URL | The app loads without a traceback. | Externally validated |
+| Overview | Six KPI cards, production trend, and synthetic-data alerts render. | Externally validated |
+| Production | Plan-versus-actual trend, line charts, and filters render. | Externally validated |
+| Quality | Yield, scrap, trend, and alerts render. | Externally validated |
+| Inventory | As-of inventory risk view and material selector render. | Externally validated |
+| Filters | Date, line, shift, product, and applicable material filters update the visible analysis. | Externally validated |
+| Sample data | Dashboard is populated automatically; no upload is required. | Externally validated |
+| Excel export | The Reports & Insights download produces a non-empty `.xlsx` file. | Externally validated |
+| PDF export | The Reports & Insights download produces a non-empty `.pdf` file. | Externally validated |
+| No AI key | Management summary is an explicitly labeled deterministic offline fallback. | Externally validated |
+| Upload isolation | No file-upload control is available in public-demo mode. | Externally validated |
 
 Record browser, deployment commit, URL, date, and any unsupported download behavior when the external smoke test is executed.
 

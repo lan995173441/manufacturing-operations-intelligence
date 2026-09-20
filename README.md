@@ -6,7 +6,7 @@
 
 Turn disconnected production, quality, and inventory spreadsheets into validated operational intelligence, deterministic KPIs, visible exceptions, interactive dashboards, and repeatable management reports.
 
-This released v1.0.0 portfolio MVP demonstrates transferable Python, Excel/CSV, data-quality, analytics, dashboard, and reporting automation skills. It is a local case study—not a production MES, customer deployment, or hosted multi-user product.
+This released v1.0.0 portfolio MVP demonstrates transferable Python, Excel/CSV, data-quality, analytics, dashboard, and reporting automation skills. It is a public synthetic-data demonstration—not a production MES, customer deployment, or hosted multi-user product.
 
 [Portfolio case study](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.md) · [Architecture](ARCHITECTURE.md) · [KPI definitions](docs/data/KPI_DEFINITIONS.md) · [Release evidence](docs/release/RELEASE_CHECKLIST.md) · [中文说明](README.zh-CN.md)
 
@@ -30,7 +30,7 @@ Operations teams often maintain production plans, actual output, quality, and in
 
 ## Demo
 
-There is no hosted demo yet. The repository is prepared for a read-only synthetic-data deployment on Streamlit Community Cloud; follow the [deployment guide](docs/deployment/STREAMLIT_COMMUNITY_CLOUD.md) to create and validate the public URL. Run the release locally, select **Load synthetic demo data**, and follow this three-to-five-minute path:
+Try the read-only synthetic-data [public demo](https://manufacturing-operations-intelligence-3pvpwneerbbz2xbx5hgaqw.streamlit.app/). It runs on Streamlit Community Cloud without an AI API key; uploads are disabled and the deterministic offline summary remains available. See the [deployment guide](docs/deployment/STREAMLIT_COMMUNITY_CLOUD.md) for its configuration and hosting limits. You can also run the release locally, select **Load synthetic demo data**, and follow this three-to-five-minute path:
 
 1. Review headline KPIs and alerts on **Overview**.
 2. Filter **Production** to LINE-02 from 2025-01-26 through 2025-02-01 to inspect the controlled underperformance case.
@@ -150,7 +150,7 @@ CSV intake requires one file for each `production_plan`, `production_actual`, `q
 
 ## Testing
 
-The v1.0.0 release records 140 passing automated tests and a clean Ruff check. Reproduce the engineering validation with:
+The current release validation records 141 passing automated tests and a clean Ruff check. Reproduce the engineering validation with:
 
 ```sh
 .venv/bin/ruff check .
@@ -176,7 +176,7 @@ To enable the OpenAI Responses adapter, set `MOI_AI_ENABLED=true`, `MOI_AI_API_K
 
 ## Roadmap
 
-Feature development is frozen for v1.0.0. The immediate portfolio work is to capture release screenshots, export the architecture graphic, record the one-minute walkthrough, publish a reviewed GitHub repository/release, and optionally deploy a sanitized demo. Any future product changes require a new approved scope and must preserve the documented business-rule boundaries.
+Feature development is frozen for v1.0.0. The immediate portfolio work is to capture release screenshots, export the architecture graphic, and record the one-minute walkthrough. The reviewed GitHub repository and sanitized public demo are live. Any future product changes require a new approved scope and must preserve the documented business-rule boundaries.
 
 ## License and usage note
 

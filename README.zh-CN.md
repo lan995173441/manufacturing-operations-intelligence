@@ -6,7 +6,7 @@
 
 将分散的生产、质量和库存电子表格转化为经过验证的运营信息、确定性 KPI、可见异常、交互式仪表盘和可重复的管理报告。
 
-本项目是已发布的 v1.0.0 作品集 MVP，展示可迁移的 Python、Excel/CSV、数据质量、分析、仪表盘和报告自动化能力。它是本地案例，不是生产 MES、客户部署或托管式多用户产品。
+本项目是已发布的 v1.0.0 作品集 MVP，展示可迁移的 Python、Excel/CSV、数据质量、分析、仪表盘和报告自动化能力。它是公开的合成数据演示，不是生产 MES、客户部署或托管式多用户产品。
 
 [作品集案例](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.zh-CN.md) · [架构](ARCHITECTURE.zh-CN.md) · [KPI 定义](docs/data/KPI_DEFINITIONS.zh-CN.md) · [发布证据](docs/release/RELEASE_CHECKLIST.zh-CN.md) · [English](README.md)
 
@@ -30,7 +30,7 @@ Manufacturing Operations Intelligence 接收四个相关的运营数据集，检
 
 ## 演示
 
-目前没有托管演示。仓库已准备好以只读合成数据模式部署到 Streamlit Community Cloud；请遵循[部署指南](docs/deployment/STREAMLIT_COMMUNITY_CLOUD.zh-CN.md)创建并验证公开 URL。也可以在本地运行发布版，选择 **Load synthetic demo data**，然后按照三至五分钟流程操作：
+请试用只读合成数据[公开演示](https://manufacturing-operations-intelligence-3pvpwneerbbz2xbx5hgaqw.streamlit.app/)。它运行于 Streamlit Community Cloud，不需要 AI API Key；上传已禁用，确定性的离线管理摘要仍可使用。[部署指南](docs/deployment/STREAMLIT_COMMUNITY_CLOUD.zh-CN.md)说明了配置和托管限制。也可以在本地运行发布版，选择 **Load synthetic demo data**，然后按照三至五分钟流程操作：
 
 1. 在 **Overview** 查看核心 KPI 和异常。
 2. 将 **Production** 筛选为 LINE-02、2025-01-26 至 2025-02-01，检查受控的低绩效场景。
@@ -150,7 +150,7 @@ CSV 输入要求分别提供 `production_plan`、`production_actual`、`quality`
 
 ## 测试
 
-v1.0.0 发布记录为 140 项自动化测试通过且 Ruff 检查通过。使用以下命令复现工程验证：
+当前发布验证记录为 141 项自动化测试通过且 Ruff 检查通过。使用以下命令复现工程验证：
 
 ```sh
 .venv/bin/ruff check .
@@ -176,7 +176,7 @@ v1.0.0 发布记录为 140 项自动化测试通过且 Ruff 检查通过。使�
 
 ## 路线图
 
-v1.0.0 已冻结功能。当前作品集工作的重点是采集发布版截图、导出架构图、录制一分钟演示、发布经过审核的 GitHub 仓库/Release，并可选部署经过脱敏的演示。未来产品变更必须经过新的范围批准，并继续遵守已记录的业务规则边界。
+v1.0.0 已冻结功能。当前作品集工作的重点是采集发布版截图、导出架构图和录制一分钟演示。经过审核的 GitHub 仓库和脱敏的公开演示现已上线。未来产品变更必须经过新的范围批准，并继续遵守已记录的业务规则边界。
 
 ## 许可与使用说明
 

@@ -1,6 +1,6 @@
 # 公开作品集部署 — Streamlit Community Cloud
 
-状态：仓库部署配置已就绪；尚未创建公开 URL。英文主文档：[STREAMLIT_COMMUNITY_CLOUD.md](STREAMLIT_COMMUNITY_CLOUD.md)。
+状态：公开演示已部署并完成外部冒烟测试：[manufacturing-operations-intelligence-3pvpwneerbbz2xbx5hgaqw.streamlit.app](https://manufacturing-operations-intelligence-3pvpwneerbbz2xbx5hgaqw.streamlit.app/)。英文主文档：[STREAMLIT_COMMUNITY_CLOUD.md](STREAMLIT_COMMUNITY_CLOUD.md)。
 
 ## 平台
 
@@ -39,19 +39,19 @@
 
 发布后，请在干净浏览器会话中执行以下检查：
 
-| 检查项 | 公开演示的预期结果 | 尚无 URL 时的状态 |
+| 检查项 | 公开演示的预期结果 | 公开验证状态 |
 | --- | --- | --- |
-| 公开 URL | 应用加载且不显示异常堆栈。 | 无法外部测试 |
-| Overview | 显示六个 KPI 卡片、生产趋势和合成数据异常。 | 已本地验证 |
-| Production | 显示计划与实际趋势、产线图表和筛选。 | 已本地验证 |
-| Quality | 显示良品率、废品率、趋势和异常。 | 已本地验证 |
-| Inventory | 显示截至所选日期的库存风险和物料筛选。 | 已本地验证 |
-| 筛选 | 日期、产线、班次、产品和适用物料筛选更新可见分析。 | 已本地验证 |
-| 样例数据 | 仪表盘自动填充，无需上传。 | 已本地验证 |
-| Excel 导出 | Reports & Insights 下载非空 `.xlsx` 文件。 | 已本地验证 |
-| PDF 导出 | Reports & Insights 下载非空 `.pdf` 文件。 | 已本地验证 |
-| 无 AI 密钥 | 管理摘要明确显示为确定性离线回退。 | 已本地验证 |
-| 上传隔离 | 公开演示模式不显示文件上传控件。 | 已本地验证 |
+| 公开 URL | 应用加载且不显示异常堆栈。 | 已完成外部验证 |
+| Overview | 显示六个 KPI 卡片、生产趋势和合成数据异常。 | 已完成外部验证 |
+| Production | 显示计划与实际趋势、产线图表和筛选。 | 已完成外部验证 |
+| Quality | 显示良品率、废品率、趋势和异常。 | 已完成外部验证 |
+| Inventory | 显示截至所选日期的库存风险和物料筛选。 | 已完成外部验证 |
+| 筛选 | 日期、产线、班次、产品和适用物料筛选更新可见分析。 | 已完成外部验证 |
+| 样例数据 | 仪表盘自动填充，无需上传。 | 已完成外部验证 |
+| Excel 导出 | Reports & Insights 下载非空 `.xlsx` 文件。 | 已完成外部验证 |
+| PDF 导出 | Reports & Insights 下载非空 `.pdf` 文件。 | 已完成外部验证 |
+| 无 AI 密钥 | 管理摘要明确显示为确定性离线回退。 | 已完成外部验证 |
+| 上传隔离 | 公开演示模式不显示文件上传控件。 | 已完成外部验证 |
 
 执行外部冒烟测试时，记录浏览器、部署提交、URL、日期和任何不支持的下载行为。
 
