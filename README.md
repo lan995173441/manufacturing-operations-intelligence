@@ -30,7 +30,7 @@ Operations teams often maintain production plans, actual output, quality, and in
 
 ## Demo
 
-There is no hosted demo yet. Run the release locally, select **Load synthetic demo data**, and follow this three-to-five-minute path:
+There is no hosted demo yet. The repository is prepared for a read-only synthetic-data deployment on Streamlit Community Cloud; follow the [deployment guide](docs/deployment/STREAMLIT_COMMUNITY_CLOUD.md) to create and validate the public URL. Run the release locally, select **Load synthetic demo data**, and follow this three-to-five-minute path:
 
 1. Review headline KPIs and alerts on **Overview**.
 2. Filter **Production** to LINE-02 from 2025-01-26 through 2025-02-01 to inspect the controlled underperformance case.

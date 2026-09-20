@@ -22,11 +22,12 @@ def _read_bool(name: str, default: bool) -> bool:
 
 @dataclass(frozen=True, slots=True)
 class Settings:
-    """Small set of foundation settings; no business configuration belongs here."""
+    """Small set of environment settings; no business configuration belongs here."""
 
     environment: str
     database_path: Path
     ai_enabled: bool
+    public_demo: bool
 
     @classmethod
     def from_environment(cls) -> Settings:
@@ -40,5 +41,5 @@ class Settings:
                 )
             ),
             ai_enabled=_read_bool("MOI_AI_ENABLED", default=False),
+            public_demo=_read_bool("MOI_PUBLIC_DEMO", default=False),
         )
-

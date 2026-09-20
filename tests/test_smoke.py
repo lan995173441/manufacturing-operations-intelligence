@@ -11,7 +11,7 @@ from manufacturing_operations_intelligence.ui.app import main
 
 def test_foundation_imports_and_defaults(monkeypatch) -> None:
     """The architecture boundaries and required dependencies import cleanly."""
-    for variable in ("MOI_ENVIRONMENT", "MOI_DATABASE_PATH", "MOI_AI_ENABLED"):
+    for variable in ("MOI_ENVIRONMENT", "MOI_DATABASE_PATH", "MOI_AI_ENABLED", "MOI_PUBLIC_DEMO"):
         monkeypatch.delenv(variable, raising=False)
 
     modules = (
@@ -41,4 +41,5 @@ def test_foundation_imports_and_defaults(monkeypatch) -> None:
     assert settings.environment == "development"
     assert settings.database_path == Path("var/manufacturing_operations_intelligence.db")
     assert settings.ai_enabled is False
+    assert settings.public_demo is False
     assert callable(main)

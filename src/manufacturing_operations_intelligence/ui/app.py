@@ -478,16 +478,32 @@ def main(settings: Settings | None = None) -> None:
     except ApplicationServiceError as exc:
         st.error(str(exc))
         return
+
+    if current.public_demo and options is None:
+        try:
+            result = service.load_sample_data()
+            if result.status not in {"accepted", "unchanged"}:
+                st.error("The public synthetic demo data could not be activated.")
+                return
+            options = service.get_filter_options()
+        except ApplicationServiceError as exc:
+            st.error(str(exc))
+            return
+
     active_batch_id = options.identity.batch_id if options else None
 
     with st.sidebar:
         st.header("Get started")
-        acknowledged = _replacement_acknowledged(active_batch_id, "loading demo data")
-        demo_requested = (
-            st.button("Load synthetic demo data", disabled=not acknowledged) and acknowledged
-        )
-        if demo_requested:
-            st.session_state["downtime_threshold"] = "120"
+        demo_requested = False
+        if current.public_demo:
+            st.caption("Public demo mode · synthetic data only · uploads are disabled.")
+        else:
+            acknowledged = _replacement_acknowledged(active_batch_id, "loading demo data")
+            demo_requested = (
+                st.button("Load synthetic demo data", disabled=not acknowledged) and acknowledged
+            )
+            if demo_requested:
+                st.session_state["downtime_threshold"] = "120"
         threshold_text = st.text_input(
             "Downtime alert threshold (line-minutes per slot)",
             key="downtime_threshold",
@@ -510,7 +526,8 @@ def main(settings: Settings | None = None) -> None:
                 st.rerun()
             except ApplicationServiceError as exc:
                 st.error(str(exc))
-        _upload_controls(service, active_batch_id)
+        if not current.public_demo:
+            _upload_controls(service, active_batch_id)
 
     if "upload_feedback" in st.session_state:
         _feedback(st.session_state["upload_feedback"])

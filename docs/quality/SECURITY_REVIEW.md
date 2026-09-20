@@ -1,6 +1,6 @@
 # Security and reliability review — portfolio MVP
 
-Date: 2026-09-17. Chinese counterpart: [SECURITY_REVIEW.zh-CN.md](SECURITY_REVIEW.zh-CN.md). Scope: this local, single-user synthetic-data demonstration. This review does not certify a public service or production MES.
+Date: 2026-09-17; public-demo deployment update: 2026-09-20. Chinese counterpart: [SECURITY_REVIEW.zh-CN.md](SECURITY_REVIEW.zh-CN.md). Scope: this local, single-user synthetic-data MVP and its read-only public portfolio mode. This review does not certify a production service or MES.
 
 ## Findings and changes
 
@@ -11,7 +11,7 @@ Date: 2026-09-17. Chinese counterpart: [SECURITY_REVIEW.zh-CN.md](SECURITY_REVIE
 | Temporary files | Uploads and report artifacts stay in memory; application code does not create upload/report temporary files. Test databases and fixtures use temporary directories. |
 | SQLite failures | Atomic batch replacement and fingerprint/key verification remain in place. Corrupt/incompatible database errors are presented clearly. Persistence-failure results now contain a fixed user-safe message rather than an underlying exception that could include local paths. |
 | Environment and API key | `.env.example` has an empty key placeholder; no `.env` exists. AI is off by default, runs only when requested, reads a process environment key, and falls back without exposing provider exception text. Invalid `MOI_AI_ENABLED` now produces a clear configuration error in the UI. |
-| Browser exposure | Streamlit remains bound to `127.0.0.1`. Usage telemetry is disabled; full uncaught tracebacks are hidden from the browser. The app has no authentication and must remain a local demo. |
+| Browser exposure | Local startup remains bound to `127.0.0.1`. Usage telemetry is disabled; full uncaught tracebacks are hidden from the browser. A public portfolio deployment must set `MOI_PUBLIC_DEMO=true`, disable AI, use an ephemeral `/tmp` database, and render no upload controls. It remains unauthenticated and synthetic-data-only. |
 | Credentials and sample data | A pattern scan of 160 project artifacts found no API-key, cloud-key or private-key blocks; it did not print file contents. `.gitignore` excludes `.env`, Streamlit secrets, key files and SQLite files. All four checked-in sample CSVs matched the fixed-seed synthetic generator byte for byte; the ignored local active database fingerprint also matches that sample. The parent Git checkout currently tracks no files from this project, so there is no project commit containing a secret to inspect; future commits still require review. |
 | Dependencies | The installed environment passed `pip check`. An isolated [PyPA pip-audit](https://github.com/pypa/pip-audit) scan initially flagged old `pip` and `pytest`; the local environment was updated to pip 26.2.1 and pytest 9.1.1, and a repeat scan reported **no known vulnerabilities**. The project dev requirement now starts at pytest 9.0.3, the patched version in the [pytest advisory](https://github.com/advisories/GHSA-6w46-j5rx-g56g). The Streamlit minimum was raised to 1.54, which also excludes the [patched Windows advisory](https://github.com/streamlit/streamlit/security/advisories/GHSA-7p48-42j8-8846). No new application dependency was added. |
 
@@ -19,8 +19,8 @@ Date: 2026-09-17. Chinese counterpart: [SECURITY_REVIEW.zh-CN.md](SECURITY_REVIE
 
 - Invalid uploads return source-positioned issues; malformed or oversized files do not activate a partial batch. Database errors leave the previous accepted data intact or stop dependent analysis with a visible error.
 - A model timeout, failure or unsupported response yields the deterministic offline summary. API credentials are never included in that summary or reports.
-- The 10 MiB server cap is per file; four selected CSVs can occupy memory before the total-batch check. This is acceptable for a loopback portfolio demo, not a public upload service.
-- Advisory scans cover the installed Python environment and publicly known issues at review time. Flexible version ranges are intentional for the MVP; a deployment would need a fresh resolution and review. Do not upload confidential client data or expose the unauthenticated app on a network.
+- The 10 MiB server cap is per file; four selected CSVs can occupy memory before the total-batch check. This remains acceptable for a loopback portfolio demo, not a public upload service. Public-demo mode does not render uploads.
+- Advisory scans cover the installed Python environment and publicly known issues at review time. Flexible version ranges are intentional for the MVP; a deployment needs a fresh resolution and review. Do not upload confidential client data. An unauthenticated network deployment is permitted only with the documented read-only, synthetic-data public-demo settings.
 
 ## Verification
 

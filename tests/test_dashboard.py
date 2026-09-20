@@ -41,6 +41,22 @@ def test_dashboard_empty_state(tmp_path: Path, monkeypatch) -> None:
     assert len(app.metric) == 6
 
 
+def test_public_demo_autoloads_synthetic_data_and_disables_uploads(
+    tmp_path: Path, monkeypatch
+) -> None:
+    monkeypatch.setenv("MOI_DATABASE_PATH", str(tmp_path / "public-demo.sqlite3"))
+    monkeypatch.setenv("MOI_PUBLIC_DEMO", "true")
+    monkeypatch.delenv("MOI_AI_API_KEY", raising=False)
+    monkeypatch.setenv("MOI_AI_ENABLED", "false")
+
+    app = AppTest.from_file(APP_FILE, default_timeout=10).run()
+
+    assert not app.exception
+    assert len(app.metric) == 6
+    assert not app.file_uploader
+    assert any("Public demo mode" in item.value for item in app.caption)
+
+
 def test_invalid_environment_boolean_is_actionable(monkeypatch) -> None:
     monkeypatch.setenv("MOI_AI_ENABLED", "maybe")
     app = AppTest.from_file(APP_FILE, default_timeout=10).run()

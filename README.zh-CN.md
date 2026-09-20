@@ -30,7 +30,7 @@ Manufacturing Operations Intelligence 接收四个相关的运营数据集，检
 
 ## 演示
 
-目前没有托管演示。请在本地运行发布版，选择 **Load synthetic demo data**，然后按照三至五分钟流程操作：
+目前没有托管演示。仓库已准备好以只读合成数据模式部署到 Streamlit Community Cloud；请遵循[部署指南](docs/deployment/STREAMLIT_COMMUNITY_CLOUD.zh-CN.md)创建并验证公开 URL。也可以在本地运行发布版，选择 **Load synthetic demo data**，然后按照三至五分钟流程操作：
 
 1. 在 **Overview** 查看核心 KPI 和异常。
 2. 将 **Production** 筛选为 LINE-02、2025-01-26 至 2025-02-01，检查受控的低绩效场景。
