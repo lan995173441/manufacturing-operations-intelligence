@@ -1,5 +1,7 @@
 # Public-demo runtime dependencies for Streamlit Community Cloud.
 # Keep aligned with the runtime dependencies in pyproject.toml.
+# Install this src-layout project so Streamlit can import the application entrypoint.
+-e .
 openpyxl>=3.1,<4
 pandas>=2.2,<3
 plotly>=5.24,<7
