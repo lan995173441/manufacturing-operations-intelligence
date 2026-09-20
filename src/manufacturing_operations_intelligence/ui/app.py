@@ -581,7 +581,7 @@ def main(settings: Settings | None = None) -> None:
             line_ids=tuple(selected_lines) or None,
             shift_ids=tuple(selected_shifts) or None,
             product_ids=tuple(selected_products) or None,
-            material_ids=tuple(selected_materials) if area == "Inventory" else None,
+            material_ids=(tuple(selected_materials) or None) if area == "Inventory" else None,
         )
     except ValueError:
         st.error("The start date must be on or before the end date.")

@@ -98,6 +98,12 @@ def test_five_areas_and_filters_render_from_sample_data(tmp_path: Path, monkeypa
         assert not app.exception
         assert any(item.value == name for item in app.header)
 
+    _area(app).set_value("Inventory").run()
+    assert any(
+        item.label == "Materials below safety stock" and item.value != "N/A"
+        for item in app.metric
+    )
+
     _area(app).set_value("Production").run()
     next(
         widget for widget in app.multiselect if widget.label.startswith("Production lines")
