@@ -1,0 +1,9 @@
+flowchart LR
+    A[Operational Data Sources<br/>Excel / CSV] --> B[Validation & Normalization<br/>Visible data-quality results]
+    B --> C[SQLite Data Layer<br/>Canonical active batch]
+    C --> D[KPI / Analytics Engine<br/>Deterministic calculations]
+    D --> E[Anomaly Detection<br/>Configurable rules]
+    E --> F[Application / Service Layer<br/>Coordinates workflows]
+    F --> G[Streamlit Dashboard<br/>Explore and filter]
+    F --> H[Excel / PDF Reporting<br/>Reuse calculated results]
+    F --> I[Management Insights<br/>Offline summary / optional AI]

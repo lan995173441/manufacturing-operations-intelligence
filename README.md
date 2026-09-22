@@ -42,15 +42,14 @@ The [portfolio release package](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.md) con
 
 ## Screenshots
 
-Release screenshots have not yet been published. The capture plan defines five reproducible views:
+Release screenshots have not yet been published. The final capture package defines four reproducible assets:
 
 1. Executive Operations Overview
 2. Production Plan vs Actual
-3. Quality Yield and Scrap Trend
-4. Inventory Risk by Material
-5. Automated Reports and Management Insights
+3. Quality Monitoring & Inventory Risk
+4. Automated Reports and Management Insights
 
-This section will become the image gallery after those assets are captured from v1.0.0. No placeholder is presented as a finished screenshot.
+The third asset is a paired Quality and Inventory composition. Exact filters, reproducible KPI values, captions, cover guidance, and the video script are in the [final portfolio package](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.md). This section will become the image gallery after those assets are captured from v1.0.0.
 
 ## Core features
 
@@ -167,8 +166,8 @@ To enable the OpenAI Responses adapter, set `MOI_AI_ENABLED=true`, `MOI_AI_API_K
 
 ## Limitations
 
-- Local, single-user portfolio MVP using synthetic data only
-- No authentication, multi-tenancy, public hosting, or real-time integrations
+- Single-user portfolio MVP using synthetic data only
+- No authentication, multi-tenancy, real-time integrations, or production hosting guarantees
 - Batch spreadsheet ingestion rather than MES, ERP, OPC-UA, IoT, or machine control
 - No production-scale performance claim or regulatory/compliance use
 - Product-owner decisions BA-01–BA-08, formal UAT artifacts, and an approved performance target remain recorded release exceptions

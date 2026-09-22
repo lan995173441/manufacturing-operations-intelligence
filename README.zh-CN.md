@@ -42,15 +42,14 @@ Manufacturing Operations Intelligence 接收四个相关的运营数据集，检
 
 ## 截图
 
-发布版截图尚未发布。采集计划定义了五个可复现视图：
+发布版截图尚未发布。最终采集包定义了四个可复现资产：
 
 1. Executive Operations Overview
 2. Production Plan vs Actual
-3. Quality Yield and Scrap Trend
-4. Inventory Risk by Material
-5. Automated Reports and Management Insights
+3. Quality Monitoring & Inventory Risk
+4. Automated Reports and Management Insights
 
-完成 v1.0.0 资产采集后，此处将成为图片展示区。当前不会把占位图当作已完成截图。
+第三个资产是 Quality 与 Inventory 的双画面组合。精确筛选、可复现 KPI 数值、图注、封面规范和视频脚本见[最终作品集发布包](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.zh-CN.md)。完成 v1.0.0 资产采集后，此处将成为图片展示区。
 
 ## 核心功能
 
@@ -167,8 +166,8 @@ CSV 输入要求分别提供 `production_plan`、`production_actual`、`quality`
 
 ## 限制
 
-- 仅使用合成数据的本地单用户作品集 MVP
-- 没有身份验证、多租户、公开托管或实时集成
+- 仅使用合成数据的单用户作品集 MVP
+- 没有身份验证、多租户、实时集成或生产级托管保证
 - 批量电子表格导入，不是 MES、ERP、OPC-UA、IoT 或设备控制
 - 不宣称生产规模性能，也不用于法规/合规判断
 - BA-01–BA-08 产品负责人决策、正式 UAT 产物和已批准性能目标仍是已记录的发布例外
