@@ -42,14 +42,13 @@ Manufacturing Operations Intelligence 接收四个相关的运营数据集，检
 
 ## 截图
 
-发布版截图尚未发布。最终采集包定义了四个可复现资产：
+这些 v1.0.0 截图使用公开演示模式的合成数据，并关闭 AI。截图来自本地发布版，使用与在线演示相同的演示配置。
 
-1. Executive Operations Overview
-2. Production Plan vs Actual
-3. Quality Monitoring & Inventory Risk
-4. Automated Reports and Management Insights
+[![管理概览](docs/portfolio/screenshots/01-executive-overview.png)](docs/portfolio/screenshots/01-executive-overview.png)
 
-第三个资产是 Quality 与 Inventory 的双画面组合。精确筛选、可复现 KPI 数值、图注、封面规范和视频脚本见[最终作品集发布包](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.zh-CN.md)。完成 v1.0.0 资产采集后，此处将成为图片展示区。
+[生产计划与绩效](docs/portfolio/screenshots/02-production-performance.png) · [质量监控与库存风险](docs/portfolio/screenshots/03-quality-inventory-risk.png) · [自动报告与洞察](docs/portfolio/screenshots/04-reporting-insights.png)
+
+截图 03 并排展示 Quality 与 Inventory 页面。精确筛选、可复现 KPI 数值和建议图注见[作品集发布包](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.zh-CN.md)。
 
 ## 核心功能
 

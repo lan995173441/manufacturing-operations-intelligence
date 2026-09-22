@@ -32,7 +32,7 @@ The manufacturing context makes the workflow concrete; the underlying delivery s
 
 ## 1. Screenshot Capture Package
 
-Use the public demo in a clean browser session. Capture at **1440 × 900 px**, browser zoom **100%**, with browser chrome excluded. Use a 16:10 crop, no tooltips, no terminal windows, and no Streamlit owner controls. Keep the UI in English.
+The table records the intended reproducible app states. The final PNGs were captured from the local v1.0.0 build in public-demo mode using synthetic data and no AI key. Browser chrome and the Streamlit toolbar were cropped. The Overview image uses a taller frame to include the production trend; Production and Reports focus on the most useful visible sections, with additional analysis available by scrolling in the app. Final image sizes are 1440 × 1452, 1440 × 852, 2560 × 1392, and 1440 × 852 px.
 
 | ID | Exact page and filters | Synthetic state and KPI values to show | Required charts/tables | Title and Upwork caption |
 | --- | --- | --- | --- | --- |
@@ -41,7 +41,7 @@ Use the public demo in a clean browser session. Capture at **1440 × 900 px**, b
 | **03** | **Composite of two matching captures**: left panel **Quality** — date `2025-02-27`–`2025-03-03`, line `LINE-01`; right panel **Inventory** — through date `2025-03-18`, materials `MAT-005`, `MAT-012`, `MAT-027`, `MAT-038`; leave other filters blank. Capture each at 1440 × 900 and combine side by side at **2560 × 1440 px**. | Quality panel: good yield **88.39%**, scrap rate **11.61%**, **10** high-scrap alerts. Inventory panel: **4 materials** below safety stock, each observed on `2025-03-18`: MAT-005 **191/248 ea**, MAT-012 **277.320/332 l**, MAT-027 **297.114/512 m**, MAT-038 **386.010/644 kg**. | Quality disposition trend and quality alerts; inventory material table and stock-observation chart. | **Quality Monitoring & Inventory Risk** — “Deterministic quality and stock-risk rules focus attention on the exceptions that need review.” |
 | **04** | **Reports & Insights**. Date: `2025-01-01`–`2025-03-31`; line, shift, product blank; downtime threshold `120`. Select **Generate management summary**, then **Generate management reports**. | Scope context, 52 alerts, and the labeled **Deterministic offline summary · AI is disabled** state. | Report scope trend, anomaly table, offline summary with limitations, and **Download Excel report** / **Download PDF report** actions. | **Automated Reporting & Insights** — “One validated analytics payload drives dashboard insight, Excel, PDF, and a no-key management summary.” |
 
-**Capture rule:** Screenshot 03 is a purposeful paired composition, not a duplicate. It is the only efficient way to show the two distinct pages required for quality and inventory in four primary assets.
+**Capture rule:** Screenshot 03 is a purposeful paired composition, not a duplicate. Its two source views were captured at 1280 × 1440 px, placed side by side, and cropped above the toolbar.
 
 ## 2. Demo Data Presentation
 
@@ -181,26 +181,25 @@ The reviewed public demo, repository, README, and planned capture states use syn
 
 | Asset | Status | Source | Required action |
 | --- | --- | --- | --- |
-| Portfolio cover | **NEEDS HUMAN CAPTURE** | Screenshot 01 + cover specification | Capture the clean Overview state and compose the cover. |
-| Screenshot 01 | **NEEDS HUMAN CAPTURE** | Public demo, specified Overview scope | Capture at 1440 × 900. |
-| Screenshot 02 | **NEEDS HUMAN CAPTURE** | Public demo, LINE-02 underperformance scope | Capture at 1440 × 900. |
-| Screenshot 03 | **NEEDS HUMAN CAPTURE** | Public demo, Quality and Inventory paired captures | Capture both panels and compose at 2560 × 1440. |
-| Screenshot 04 | **NEEDS HUMAN CAPTURE** | Public demo, Reports & Insights scope | Capture after generating summary and reports. |
+| Portfolio cover | **NEEDS WORK** | Screenshot 01 + cover specification | Compose the cover from the captured Overview image. |
+| Screenshot 01 | **READY** | [Executive Overview](screenshots/01-executive-overview.png), local v1.0.0 public-demo mode | Use the captured synthetic-data image. |
+| Screenshot 02 | **READY** | [Production Planning & Performance](screenshots/02-production-performance.png), LINE-02 underperformance scope | Use the captured synthetic-data image. |
+| Screenshot 03 | **READY** | [Quality Monitoring & Inventory Risk](screenshots/03-quality-inventory-risk.png), paired page capture | Use the captured synthetic-data composition. |
+| Screenshot 04 | **READY** | [Automated Reporting & Insights](screenshots/04-reporting-insights.png), offline summary and reports | Use the captured synthetic-data image. |
 | Architecture diagram | **READY** | Mermaid source in this document | Export SVG/PNG when visual assets are produced. |
 | 45–60 sec video | **NEEDS HUMAN CAPTURE** | Storyboard above | Record with the four screenshot states; add captions. |
 | Upwork title | **READY** | Section 5A | Paste into Upwork. |
 | Upwork short description | **READY** | Section 5B | Paste into Upwork. |
 | Upwork long description | **READY** | Section 5C | Paste into Upwork. |
 | Skills/tags | **READY** | Section 5F | Select available Upwork equivalents. |
-| GitHub README | **READY** | [README.md](../../README.md) | Add captured assets when ready. |
+| GitHub README | **READY** | [README.md](../../README.md) | Screenshot links and Overview preview are included. |
 | Live demo | **READY** | Streamlit public demo | Keep public-demo configuration and synthetic-only data. |
 | GitHub repository | **READY** | Public GitHub repository | Add repository description and topics in GitHub settings. |
 | v1.0.0 release | **READY** | Existing `v1.0.0` tag | Add GitHub release notes only if a release page is still absent. |
 
 ## 10. Remaining Human Actions
 
-1. Capture the four specified assets from the public demo in a clean signed-out browser profile.
-2. Compose Screenshot 03 and the portfolio cover; review each frame against the quality checklist.
-3. Export the Mermaid architecture diagram as SVG and PNG.
-4. Record the 45–60 second video using the approved English narration and captions.
-5. Add the final images and video link to GitHub and Upwork; set the GitHub repository description and relevant topics.
+1. Compose the portfolio cover from Screenshot 01 and review it against the quality checklist.
+2. Export the Mermaid architecture diagram as SVG and PNG.
+3. Record the 45–60 second video using the approved English narration and captions.
+4. Add the final images and video link to Upwork; set the GitHub repository description and relevant topics.

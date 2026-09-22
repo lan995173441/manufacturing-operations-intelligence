@@ -42,14 +42,13 @@ The [portfolio release package](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.md) con
 
 ## Screenshots
 
-Release screenshots have not yet been published. The final capture package defines four reproducible assets:
+These v1.0.0 captures use the synthetic dataset in public-demo mode with AI disabled. They were taken from the local release build using the same demo configuration as the hosted application.
 
-1. Executive Operations Overview
-2. Production Plan vs Actual
-3. Quality Monitoring & Inventory Risk
-4. Automated Reports and Management Insights
+[![Executive Overview](docs/portfolio/screenshots/01-executive-overview.png)](docs/portfolio/screenshots/01-executive-overview.png)
 
-The third asset is a paired Quality and Inventory composition. Exact filters, reproducible KPI values, captions, cover guidance, and the video script are in the [final portfolio package](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.md). This section will become the image gallery after those assets are captured from v1.0.0.
+[Production Planning & Performance](docs/portfolio/screenshots/02-production-performance.png) · [Quality Monitoring & Inventory Risk](docs/portfolio/screenshots/03-quality-inventory-risk.png) · [Automated Reporting & Insights](docs/portfolio/screenshots/04-reporting-insights.png)
+
+Screenshot 03 pairs the Quality and Inventory pages. Exact filters, reproducible KPI values, and suggested captions are in the [portfolio package](docs/portfolio/PORTFOLIO_RELEASE_PACKAGE.md).
 
 ## Core features
 

@@ -32,7 +32,7 @@
 
 ## 1. 截图采集包
 
-在干净的浏览器会话中使用公开演示。每张截图使用 **1440 × 900 px**、浏览器缩放 **100%**，并裁掉浏览器外框。统一采用 16:10 裁剪，不保留工具提示、终端窗口或 Streamlit 所有者控制面板。界面保持英文。
+下表记录可复现的目标页面状态。最终 PNG 使用本地 v1.0.0 发布版的公开演示模式采集，仅含合成数据且不配置 AI Key；已裁去浏览器外框和 Streamlit 工具栏。概览图使用更高画幅，以纳入生产趋势；生产与报告图聚焦最有价值的可见区域，其他分析可在应用内滚动查看。四张最终图片尺寸依次为 1440 × 1452、1440 × 852、2560 × 1392、1440 × 852 px。
 
 | 编号 | 精确页面与筛选 | 应展示的合成场景与 KPI 数值 | 必须展示的图表/表格 | 标题与 Upwork 图注 |
 | --- | --- | --- | --- | --- |
@@ -41,7 +41,7 @@
 | **03** | **由两张同风格画面组合**：左侧 **Quality** — 日期 `2025-02-27`–`2025-03-03`、产线 `LINE-01`；右侧 **Inventory** — 截止日 `2025-03-18`、物料 `MAT-005`、`MAT-012`、`MAT-027`、`MAT-038`；其余筛选留空。分别以 1440 × 900 采集后，横向合成为 **2560 × 1440 px**。 | 质量面板：良品率 **88.39%**、废品率 **11.61%**、**10** 条高废品率异常。库存面板：**4 materials** 低于安全库存，均观测于 `2025-03-18`：MAT-005 **191/248 ea**、MAT-012 **277.320/332 l**、MAT-027 **297.114/512 m**、MAT-038 **386.010/644 kg**。 | 质量处置趋势与质量异常；库存物料表和库存观察图。 | **Quality Monitoring & Inventory Risk** — “Deterministic quality and stock-risk rules focus attention on the exceptions that need review.” |
 | **04** | **Reports & Insights**。日期：`2025-01-01`–`2025-03-31`；产线、班次、产品留空；停机阈值 `120`。先选择 **Generate management summary**，再选择 **Generate management reports**。 | 范围说明、52 条异常，以及标有 **Deterministic offline summary · AI is disabled** 的状态。 | 报告范围趋势、异常表、包含限制说明的离线摘要，以及 **Download Excel report** / **Download PDF report** 操作。 | **Automated Reporting & Insights** — “One validated analytics payload drives dashboard insight, Excel, PDF, and a no-key management summary.” |
 
-**采集规则：**截图 03 是有意设计的双画面组合，并非重复截图。它是在四个主资产中同时展示独立质量页和库存页的高效方式。
+**采集规则：**截图 03 是有意设计的双画面组合，并非重复截图。两个原始画面分别以 1280 × 1440 px 采集，并排放置后裁去顶部工具栏。
 
 ## 2. 演示数据展示
 
@@ -181,26 +181,25 @@ Python 3.12、Streamlit、Pandas、Plotly、SQLite、OpenPyXL、ReportLab、pyte
 
 | 资产 | 状态 | 来源 | 所需操作 |
 | --- | --- | --- | --- |
-| 作品集封面 | **NEEDS HUMAN CAPTURE** | 截图 01 与封面规格 | 采集干净的 Overview 状态并制作封面。 |
-| 截图 01 | **NEEDS HUMAN CAPTURE** | 公开演示，指定 Overview 范围 | 以 1440 × 900 采集。 |
-| 截图 02 | **NEEDS HUMAN CAPTURE** | 公开演示，LINE-02 低绩效范围 | 以 1440 × 900 采集。 |
-| 截图 03 | **NEEDS HUMAN CAPTURE** | 公开演示，Quality 与 Inventory 双画面 | 分别采集并合成为 2560 × 1440。 |
-| 截图 04 | **NEEDS HUMAN CAPTURE** | 公开演示，Reports & Insights 范围 | 生成摘要和报告后采集。 |
+| 作品集封面 | **NEEDS WORK** | 截图 01 与封面规格 | 使用已采集的 Overview 图片制作封面。 |
+| 截图 01 | **READY** | [管理概览](screenshots/01-executive-overview.png)，本地 v1.0.0 公开演示模式 | 使用合成数据截图。 |
+| 截图 02 | **READY** | [生产计划与绩效](screenshots/02-production-performance.png)，LINE-02 低绩效范围 | 使用合成数据截图。 |
+| 截图 03 | **READY** | [质量监控与库存风险](screenshots/03-quality-inventory-risk.png)，双画面组合 | 使用合成数据组合截图。 |
+| 截图 04 | **READY** | [自动报告与洞察](screenshots/04-reporting-insights.png)，离线摘要与报告 | 使用合成数据截图。 |
 | 架构图 | **READY** | 本文档中的 Mermaid 源码 | 生产视觉资产时导出 SVG/PNG。 |
 | 45–60 秒视频 | **NEEDS HUMAN CAPTURE** | 上方分镜 | 使用四个截图状态录制并添加字幕。 |
 | Upwork 标题 | **READY** | 第 5A 节 | 粘贴到 Upwork。 |
 | Upwork 简短描述 | **READY** | 第 5B 节 | 粘贴到 Upwork。 |
 | Upwork 详细描述 | **READY** | 第 5C 节 | 粘贴到 Upwork。 |
 | 技能/标签 | **READY** | 第 5F 节 | 选择 Upwork 中可用的对应标签。 |
-| GitHub README | **READY** | [README.zh-CN.md](../../README.zh-CN.md) | 素材准备后加入已采集的资产。 |
+| GitHub README | **READY** | [README.zh-CN.md](../../README.zh-CN.md) | 已加入截图链接和概览预览。 |
 | 在线演示 | **READY** | Streamlit 公开演示 | 保持公开演示配置和仅合成数据。 |
 | GitHub 仓库 | **READY** | 公开 GitHub 仓库 | 在 GitHub 设置中添加仓库描述和相关主题。 |
 | v1.0.0 发布 | **READY** | 现有 `v1.0.0` 标签 | 如果 Release 页面尚不存在，再补充 GitHub Release Notes。 |
 
 ## 10. 剩余人工操作
 
-1. 在干净、未登录的浏览器配置文件中按指定状态采集四个资产。
-2. 合成截图 03 和作品集封面，并按质量检查表逐帧审阅。
-3. 将 Mermaid 架构图导出为 SVG 和 PNG。
-4. 按已批准的英文旁白和字幕录制 45–60 秒视频。
-5. 将最终图片和视频链接加入 GitHub 与 Upwork，并在 GitHub 中设置仓库描述和相关主题。
+1. 使用截图 01 制作作品集封面，并按质量检查表审阅。
+2. 将 Mermaid 架构图导出为 SVG 和 PNG。
+3. 按已批准的英文旁白和字幕录制 45–60 秒视频。
+4. 将最终图片和视频链接加入 Upwork，并在 GitHub 中设置仓库描述和相关主题。
